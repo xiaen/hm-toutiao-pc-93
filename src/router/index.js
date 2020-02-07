@@ -4,13 +4,13 @@ import VueRouter from 'vue-router'
 import Vue from 'vue'
 Vue.use(VueRouter)
 
-//引入组件
-import login from '../views/login.vue'
+//引入登录组件
+import Login from '@/views/login/index.vue'
 
 //初始化
 const router = new VueRouter({
   routes:[
-  {path:'/', component:login}
+  {path:'/login', component:Login}
   ]
 })
 
