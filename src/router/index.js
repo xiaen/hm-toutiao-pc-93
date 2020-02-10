@@ -13,6 +13,9 @@ import Welcome from '@/views/welcome'
 //引入notfound组件
 import NotFound from '@/views/notfound'
 
+//引入auth文件，token存储相关函数
+import auth from '@/utils/auth'
+
 //初始化
 const router = new VueRouter({
   routes:[
@@ -20,6 +23,14 @@ const router = new VueRouter({
   {path: '/', component: Home, children: [{path: '/', component: Welcome}]},
   {path: '*', component: NotFound}
   ]
+})
+
+//路由前置导航守卫
+router.beforeEach((to, from, next) => {
+  //如果不是login地址，并且没有token，则跳转到login页面
+  if (to.path !== '/login' && !auth.getUser().token) return next('/login')
+  //其他放行
+  next()
 })
 
 //导出路由实例

@@ -30,6 +30,8 @@
   </div>
 </template>
 <script>
+  //导入token存储相关函数
+  import auth from '@/utils/auth'
 export default {
   name:'app-login',
   data() {
@@ -76,6 +78,9 @@ export default {
         if (valid) {
           // 进行登录
           this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm).then((res) => {
+            //res是响应报文，res.data是响应体，res.data.data是用户信息
+            //存储用户信息 token
+            auth.setUser(res.data.data)
             //跳转到首页地址
             this.$router.push('/')
           }).catch(() => {

@@ -46,15 +46,17 @@
       <el-header class="home-header">
         <span class="el-icon-s-fold icon" @click="toggleMenu"></span>
         <span class="text">江苏传智播客科技教育有限公司</span>
-        <el-dropdown class="home-dropdown">
+        <el-dropdown class="home-dropdown" @command="myHandle">
           <span class="el-dropdown-link">
-            <img class="head" src="../../assets/avatar.jpg" alt="">
-            <b class="user">xiaen</b>
+            <!-- 头像 -->
+            <img class="head" :src="photo" alt="">
+            <!-- 用户名 -->
+            <b class="user">{{name}}</b>
             <i class="el-icon-arrow-down el-icon--right"></i>
           </span>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>个人设置</el-dropdown-item>
-            <el-dropdown-item>退出登录</el-dropdown-item>
+            <el-dropdown-item command="setting">个人设置</el-dropdown-item>
+            <el-dropdown-item command="logout">退出登录</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </el-header>
@@ -67,17 +69,38 @@
 </template>
 
 <script>
+  //引入auth模块，获取用户信息
+  import auth from '@/utils/auth'
   export default {
     name: 'app-home',
     data() {
       return {
-        isOpen: true
+        isOpen: true,
+        name: '',
+        photo: ''
       }
+    },
+    created() {
+      const user = auth.getUser()
+      this.name = user.name
+      this.photo = user.photo
     },
     methods: {
       // 点击折叠之间，通过切换数据
       toggleMenu() {
         this.isOpen = !this.isOpen
+      },
+      myHandle(command) {
+        if (command === 'setting') {
+          //跳转到个人设置页面
+          this.$router.push('/setting')
+        }
+        if (command === 'logout') {
+          //清除本地信息
+          auth.delUser()
+          //跳转到登录页面
+          this.$router.push('/login')
+        }
       }
     },
   }
