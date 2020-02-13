@@ -32,6 +32,8 @@
 <script>
   //导入token存储相关函数
   import auth from '@/utils/auth'
+  //导入axios
+  import axios from '@/api'
 export default {
   name:'app-login',
   data() {
@@ -49,7 +51,7 @@ export default {
     return {
       //表单数据
       loginForm: {
-        mobile:'13911111111',
+        mobile:'13911111112',
         code:'246810'
       },
       //表单规则
@@ -73,20 +75,33 @@ export default {
   methods: {
     login() {
       // 获取表单实例，调用validate方法，对整体表单进行校验
-      this.$refs.loginForm.validate((valid) => {
+      this.$refs.loginForm.validate(async (valid) => {
         // valid 为 true 校验成功，如果失败不用管
         if (valid) {
           // 进行登录
-          this.$http.post('http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.loginForm).then((res) => {
-            //res是响应报文，res.data是响应体，res.data.data是用户信息
-            //存储用户信息 token
+          // this.$http.post('authorizations', this.loginForm).then((res) => {
+          //   //res是响应报文，res.data是响应体，res.data.data是用户信息
+          //   //存储用户信息 token
+          //   auth.setUser(res.data.data)
+          //   //跳转到首页地址
+          //   this.$router.push('/')
+          // }).catch(() => {
+          //   //有错误，提示手机号或验证码错误
+          //   this.$message.error('手机号或验证码错误');
+          // })
+          //使用async await进行请求登录
+          //使用try{} catch(){} 捕获异常
+          try {
+            // 获得响应报文
+            const res = await this.$http.post('authorizations', this.loginForm)
+            //添加用户信息，到本地存储
             auth.setUser(res.data.data)
-            //跳转到首页地址
+            //跳转到首页
             this.$router.push('/')
-          }).catch(() => {
-            //有错误，提示手机号或验证码错误
+          } catch (e) {
+            //提示错误信息
             this.$message.error('手机号或验证码错误');
-          })
+          }
         }
       })
     }

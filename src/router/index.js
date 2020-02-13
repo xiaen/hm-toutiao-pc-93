@@ -12,6 +12,8 @@ import Home from '@/views/home'
 import Welcome from '@/views/welcome'
 //引入notfound组件
 import NotFound from '@/views/notfound'
+//引入内容组件
+import Article from '@/views/article'
 
 //引入auth文件，token存储相关函数
 import auth from '@/utils/auth'
@@ -20,7 +22,10 @@ import auth from '@/utils/auth'
 const router = new VueRouter({
   routes:[
   {path: '/login', component: Login},
-  {path: '/', component: Home, children: [{path: '/', component: Welcome}]},
+  {path: '/', component: Home, children: [
+    {path: '/', component: Welcome},
+    {path: '/article', component: Article}
+  ]},
   {path: '*', component: NotFound}
   ]
 })
