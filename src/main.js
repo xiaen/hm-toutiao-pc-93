@@ -11,6 +11,7 @@ import router from '@/router'
 //导入element-ui
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import '@/styles/index.css'
 
 //导入自定义插件
 import plugin from '@/plugin'

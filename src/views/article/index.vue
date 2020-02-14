@@ -18,20 +18,10 @@
             <el-radio :label="3">审核失败</el-radio>
           </el-radio-group>
         </el-form-item>
+        <!-- 频道组件 -->
         <el-form-item label="频道">
-          <el-select
-            v-model="filterData.channel_id"
-            placeholder="请选择"
-            clearable
-            @change="channelChange"
-          >
-            <el-option
-              v-for="item in channelOptions"
-              :key="item.id"
-              :label="item.name"
-              :value="item.id"
-            ></el-option>
-          </el-select>
+          <!-- <my-channel :value="filterData.channel_id" @input="filterData.channel_id = $event"></my-channel> -->
+          <my-channel v-model="filterData.channel_id"></my-channel>
         </el-form-item>
         <el-form-item label="日期">
           <el-date-picker
@@ -123,8 +113,6 @@ export default {
         page: 1,
         per_page: 20
       },
-      // 下拉选框的数据
-      channelOptions: [],
       // 选择日期后的数组，[起始日期，结束日期]
       dateArr: [],
       // 筛选结果，表格数据
@@ -132,8 +120,6 @@ export default {
     };
   },
   created() {
-    //获取频道数据
-    this.getChannelOptions();
     //获取表格数据
     this.getTableData();
   },
@@ -172,12 +158,6 @@ export default {
     toEditPage(id) {
       this.$router.push(`/publish?id=${id}`);
     },
-    //频道改变事件
-    channelChange(id) {
-      if (id === "") {
-        this.filterData.channel_id = null;
-      }
-    },
     //点击筛选
     search() {
       //筛选后，不确定有多少条数据，所以默认为第一页
@@ -201,14 +181,7 @@ export default {
       //重新向服务器获取数据
       this.getTableData();
     },
-    //获取频道数据
-    async getChannelOptions() {
-      //得到服务器的返回数据
-      const res = await this.$http.get("channels");
-      // 对channleOptions进行赋值
-      this.channelOptions = res.data.data.channels;
-    },
-    //获取频道数据
+    //获取表格数据
     async getTableData() {
       //得到服务器的返回数据
       const res = await this.$http.get("articles", { params: this.filterData });
@@ -221,5 +194,5 @@ export default {
 };
 </script>
 
-<style>
+<style scoped lang="less">
 </style>
