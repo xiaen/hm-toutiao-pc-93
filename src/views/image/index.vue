@@ -128,9 +128,11 @@ export default {
       this.$message.success(res.data.data.collect ? "添加收藏" : "取消收藏");
       //改类名
       item.is_collected = res.data.data.collect;
+      this.getImage();
     },
     //全部收藏切换
-    collectChange() {
+    collectChange(flag) {
+      this.filterImage.page = 1;
       this.getImage();
     },
     //页码切换
@@ -153,8 +155,8 @@ export default {
 <style scoped lang="less">
 .img-list {
   .img-item {
-    width: 207px;
-    height: 207px;
+    width: 284px;
+    height: 284px;
     margin: 20px 20px;
     display: inline-block;
     position: relative;
