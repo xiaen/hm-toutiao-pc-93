@@ -31,6 +31,7 @@
         :page-size="this.commentData.per_page"
         :current-page="this.commentData.page"
         @current-change="currentChange"
+        style="text-align: center; margin-top: 20px"
       ></el-pagination>
     </el-card>
   </div>

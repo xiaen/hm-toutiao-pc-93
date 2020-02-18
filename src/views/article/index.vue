@@ -85,7 +85,7 @@
       </el-table>
       <!-- total 总页数 current-change页数改变事件 page-size每页数据条数 current-page当前页 -->
       <el-pagination
-        style="margin-top: 20px"
+        style="margin-top: 20px; text-align: center;"
         background
         layout="prev, pager, next"
         :total="total"
