@@ -22,6 +22,8 @@ import Publish from '@/views/publish'
 import Comment from '@/views/comment'
 //引入粉丝管理组件
 import Fans from '@/views/fans'
+//引入个人设置组件
+import Setting from '@/views/setting'
 
 //引入auth文件，token存储相关函数
 import auth from '@/utils/auth'
@@ -36,7 +38,8 @@ const router = new VueRouter({
     {path: '/image', component: Image},
     {path: '/publish', component: Publish},
     {path: '/comment', component: Comment},
-    {path: '/fans', component: Fans}
+    {path: '/fans', component: Fans},
+    {path: '/setting', component: Setting}
   ]},
   {path: '*', component: NotFound}
   ]

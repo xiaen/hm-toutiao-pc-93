@@ -8,9 +8,17 @@
       <div class="logo" :class="{min: !isOpen}"></div>
       <!-- 导航栏 -->
       <!-- element-ui自带导航栏折叠属性collapse，动态绑定 ，折叠动画关闭-->
-      <el-menu :default-active="$route.path" class="el-menu-vertical-demo"
-        background-color="#002033" text-color="#fff" active-text-color="#ffd04b"
-        style="border-right: none;" :collapse="!isOpen" :collapse-transition="false" router>
+      <el-menu
+        :default-active="$route.path"
+        class="el-menu-vertical-demo"
+        background-color="#002033"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+        style="border-right: none;"
+        :collapse="!isOpen"
+        :collapse-transition="false"
+        router
+      >
         <el-menu-item index="/">
           <i class="el-icon-s-home"></i>
           <span slot="title">首页</span>
@@ -49,7 +57,7 @@
         <el-dropdown class="home-dropdown" @command="myHandle">
           <span class="el-dropdown-link">
             <!-- 头像 -->
-            <img class="head" :src="photo" alt="">
+            <img class="head" :src="photo" alt />
             <!-- 用户名 -->
             <b class="user">{{name}}</b>
             <i class="el-icon-arrow-down el-icon--right"></i>
@@ -69,89 +77,98 @@
 </template>
 
 <script>
-  //引入auth模块，获取用户信息
-  import auth from '@/utils/auth'
-  export default {
-    name: 'app-home',
-    data() {
-      return {
-        isOpen: true,
-        name: '',
-        photo: ''
+import eventBus from "@/eventBus";
+//引入auth模块，获取用户信息
+import auth from "@/utils/auth";
+export default {
+  name: "app-home",
+  data() {
+    return {
+      isOpen: true,
+      name: "",
+      photo: ""
+    };
+  },
+  created() {
+    const user = auth.getUser();
+    this.name = user.name;
+    this.photo = user.photo;
+    eventBus.$on('updataUserDate', (name) => {
+      this.name = name
+    })
+    eventBus.$on('updateUserPhoto', (photo) => {
+      this.photo = photo
+    })
+    
+  },
+  methods: {
+    // 点击折叠之间，通过切换数据
+    toggleMenu() {
+      this.isOpen = !this.isOpen;
+    },
+    myHandle(command) {
+      if (command === "setting") {
+        //跳转到个人设置页面
+        this.$router.push("/setting");
       }
-    },
-    created() {
-      const user = auth.getUser()
-      this.name = user.name
-      this.photo = user.photo
-    },
-    methods: {
-      // 点击折叠之间，通过切换数据
-      toggleMenu() {
-        this.isOpen = !this.isOpen
-      },
-      myHandle(command) {
-        if (command === 'setting') {
-          //跳转到个人设置页面
-          this.$router.push('/setting')
-        }
-        if (command === 'logout') {
-          //清除本地信息
-          auth.delUser()
-          //跳转到登录页面
-          this.$router.push('/login')
-        }
+      if (command === "logout") {
+        //清除本地信息
+        auth.delUser();
+        //跳转到登录页面
+        this.$router.push("/login");
       }
-    },
+    }
   }
+};
 </script>
 
 <style lang="less">
-  .home {
-    width: 100%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .home-aside {
-    background-color: #002033;
-  }
-  .home-header {
-    border-bottom: 1px solid #ddd;
-  }
-  .el-icon-s-fold {
-    font-size: 24px;
-  }
-  .home-header .icon {
-    vertical-align: middle;
-  }
-  .text {
-    line-height: 60px;
-    padding-left: 8px;
-    vertical-align: middle;
-  }
-  .home-dropdown {
-    float: right;
-    line-height: 60px;
-  }
-  .head {
-    width: 30px;
-    height: 30px;
-    vertical-align: middle;
-  }
-  .user {
-    vertical-align: middle;
-    margin-left: 5px;
-  }
-  .logo {
-    width: 100%;
-    height: 60px;
-    background: #002044 url(../../assets/logo_admin.png) no-repeat center / 140px auto;
-  }
-  /* 当数据变化时，是否添加.min ，必须写在.logo下面*/
-  .min {
-    background-image: url(../../assets/logo_admin_01.png);
-    background-size: 36px;
-  }
+.home {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+.home-aside {
+  background-color: #002033;
+}
+.home-header {
+  border-bottom: 1px solid #ddd;
+}
+.el-icon-s-fold {
+  font-size: 24px;
+}
+.home-header .icon {
+  vertical-align: middle;
+}
+.text {
+  line-height: 60px;
+  padding-left: 8px;
+  vertical-align: middle;
+}
+.home-dropdown {
+  float: right;
+  line-height: 60px;
+}
+.head {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle;
+}
+.user {
+  vertical-align: middle;
+  margin-left: 5px;
+}
+.logo {
+  width: 100%;
+  height: 60px;
+  background: #002044 url(../../assets/logo_admin.png) no-repeat center / 140px
+    auto;
+}
+/* 当数据变化时，是否添加.min ，必须写在.logo下面*/
+.min {
+  background-image: url(../../assets/logo_admin_01.png);
+  background-size: 36px;
+}
 </style>
